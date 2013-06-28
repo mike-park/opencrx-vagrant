@@ -75,7 +75,9 @@ Vagrant.configure("2") do |config|
   config.vm.provision :chef_solo do |chef|
     chef.json = {
         ant: {
-            version: '1.8.4'
+            url: 'http://archive.apache.org/dist/ant/binaries/apache-ant-1.8.4-bin.zip',
+            version: '1.8.4',
+            home: '/home/vagrant/ant',
         }
     }
 
@@ -83,7 +85,7 @@ Vagrant.configure("2") do |config|
     #Chef::Exceptions::Package: package[ivy] (ant::install_package line 25) had an error: Chef::Exceptions::Package: No version specified
 
     chef.run_list = [
-        "recipe[java]"
+        "recipe[opencrx]"
     ]
   end
 end

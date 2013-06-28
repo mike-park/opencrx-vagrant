@@ -1,3 +1,3 @@
 site :opscode
 
-cookbook 'java'
+cookbook 'opencrx', github: 'mike-park/opencrx-chef-recipe'
