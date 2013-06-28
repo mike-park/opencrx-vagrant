@@ -30,6 +30,7 @@ Vagrant.configure("2") do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
+  config.vm.network :forwarded_port, guest: 8080, host: 8080
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -53,13 +54,14 @@ Vagrant.configure("2") do |config|
   # information on available options.
 
   config.ssh.max_tries = 40
-  config.ssh.timeout = 120
+  config.ssh.timeout   = 120
 
   # The path to the Berksfile to use with Vagrant Berkshelf
   # config.berkshelf.berksfile_path = "./Berksfile"
 
   # Enabling the Berkshelf plugin. To enable this globally, add this configuration
   # option to your ~/.vagrant.d/Vagrantfile file
+  config.omnibus.chef_version = :latest
   config.berkshelf.enabled = true
 
   # An array of symbols representing groups of cookbook described in the Vagrantfile
@@ -74,16 +76,13 @@ Vagrant.configure("2") do |config|
     chef.json = {
         ant: {
             version: '1.8.4'
-        },
-        :mysql => {
-            :server_root_password => 'rootpass',
-            :server_debian_password => 'debpass',
-            :server_repl_password => 'replpass'
         }
     }
 
+    # ant fails with:
+    #Chef::Exceptions::Package: package[ivy] (ant::install_package line 25) had an error: Chef::Exceptions::Package: No version specified
+
     chef.run_list = [
-        "recipe[ant::install_source]",
         "recipe[java]"
     ]
   end
